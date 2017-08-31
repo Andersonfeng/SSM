@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xmlns:p="http://www.springframework.org/schema/p"  
+       xmlns:mvc="http://www.springframework.org/schema/mvc"  
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xmlns:aop="http://www.springframework.org/schema/aop"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd ">  
+
+    <context:component-scan base-package="demo.anderson.controller" />
+    <mvc:annotation-driven/>
+    <context:property-placeholder location="classpath:jdbc.properties" />
+    <!--    <bean id="propertyConfigurer"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+    p:location="classpath:jdbc.properties" />-->
+    <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp.BasicDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.url}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}"
+          p:defaultAutoCommit="true"    />
+    
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 加载mybatis的配置文件 -->
+        <property name="configLocation" value="classpath:SqlMapConfig.xml" />
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定扫描的包名 
+        如果扫描多个包，每个包中间使用半角逗号分隔
+        -->
+        <!--<property name="basePackage" value="demo.dao"/>-->
+        <property name="basePackage" value="demo.anderson.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+		
+    </bean>
+    
+    
+    
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/"
+          p:suffix=".jsp" />
+    
+    
+    <bean id="studentService" class="demo.anderson.service.StudentService">
+        <property name="studentMapper" ref="studentMapper"/>
+    </bean>
+    
+    <bean id="ScoreService" class="demo.anderson.service.ScoreService">
+        <property name="scMapper" ref="scMapper"/>
+    </bean>
+    
+    <bean id="CourseService" class="demo.anderson.service.CourseService">
+        <property name="courseMapper" ref="courseMapper"/>
+    </bean>
+    
+    <bean id="courseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="demo.anderson.mapper.CourseMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="scMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="demo.anderson.mapper.ScMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="demo.anderson.mapper.StudentMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="springContextUtil" class="demo.anderson.util.SpringContextUtil" />
+
+
+    
+    <!--controller-->
+    <!--    <bean  class="demo.controller.StudentController" >
+        <property name="studentService">
+            <ref bean="studentService"/>                
+        </property>
+    </bean>-->
+    <!--<bean name="/test" class="demo.anderson.controller.TestController"></bean>-->
+    
+    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->  
+    
+    <bean id="logHandler" class="demo.anderson.aop.LogHandler"></bean>
+    <aop:config>
+        <aop:aspect id="log" ref="logHandler">    
+            <aop:pointcut id="addLog" expression="execution(* demo.anderson.controller.StudentController.*(..)) || execution(* demo.anderson.controller.ScoreController.*(..)) and args(..)"  />
+            <!--<aop:pointcut id="addLog" expression="execution(* demo.anderson.controller.*.*(..))"  />-->
+            <aop:before method="beforeLog" pointcut-ref="addLog"/>
+            <aop:after method="afterLog" pointcut-ref="addLog" />
+        </aop:aspect>
+    </aop:config>
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+
+</beans>
