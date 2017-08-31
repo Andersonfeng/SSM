@@ -1,4 +1,5 @@
-# SSM
+后台用spring spring-mvc mybatis，前端用bootstrap 做的增删改查小程序
+
 ## 框架:  
 [Spring](http://projects.spring.io/spring-framework/)  
 [Spring-MVC](http://projects.spring.io/spring-framework/)  
