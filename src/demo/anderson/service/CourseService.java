@@ -9,14 +9,19 @@ import demo.anderson.mapper.CourseMapper;
 import demo.anderson.mapper.ScMapper;
 import demo.anderson.po.Course;
 import demo.anderson.po.CourseExample;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
  *
  * @author anderson
  */
+@Service
 public class CourseService {
 
+    @Autowired
     private CourseMapper courseMapper;
 
     public List<Course> findAllCourse() {

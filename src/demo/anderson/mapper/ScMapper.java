@@ -5,7 +5,9 @@ import demo.anderson.po.ScExample;
 import demo.anderson.po.ScKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
 
+@MapperScan
 public interface ScMapper {
 
     long countByExample(ScExample example);

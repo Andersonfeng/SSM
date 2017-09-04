@@ -4,7 +4,9 @@ import demo.anderson.po.Teacher;
 import demo.anderson.po.TeacherExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
 
+@MapperScan
 public interface TeacherMapper {
     long countByExample(TeacherExample example);
 

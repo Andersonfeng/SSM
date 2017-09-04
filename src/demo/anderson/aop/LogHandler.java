@@ -6,12 +6,22 @@
 package demo.anderson.aop;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
 /**
  * @author anderson
  */
+@Component
+@Aspect
 public class LogHandler {
 
+    @Pointcut("execution(* demo.anderson.controller.*.*(..))")
+    public void pointCut(){}
+    @Before("pointCut()")
     public void beforeLog(JoinPoint jp) {
         Object[] args = jp.getArgs();
         for (Object obj : args) {
@@ -21,7 +31,7 @@ public class LogHandler {
         }
         System.out.println("-----------------------------------beforeLog()-----------------------------------");
     }
-
+    @After("pointCut()")
     public void afterLog() {
         System.out.println("-----------------------------------afterLog()-----------------------------------");
     }

@@ -9,20 +9,22 @@ import demo.anderson.mapper.StudentMapper;
 import demo.anderson.po.Student;
 import demo.anderson.po.StudentExample;
 import demo.anderson.util.SpringContextUtil;
+
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
 /**
- *
  * @author anderson
  */
+@Service
 public class StudentService {
 
+    @Autowired
     private StudentMapper studentMapper;
-
-    public StudentService() {
-    }
 
     public Student findStudentBySno(String sno) {
         return studentMapper.selectByPrimaryKey(sno);

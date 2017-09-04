@@ -5,7 +5,9 @@ import demo.anderson.po.CourseExample;
 import demo.anderson.po.CourseKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
 
+@MapperScan
 public interface CourseMapper {
     long countByExample(CourseExample example);
 

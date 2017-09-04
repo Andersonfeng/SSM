@@ -4,7 +4,9 @@ import demo.anderson.po.Student;
 import demo.anderson.po.StudentExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
 
+@MapperScan
 public interface StudentMapper {
     long countByExample(StudentExample example);
 

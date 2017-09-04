@@ -10,14 +10,19 @@ import demo.anderson.po.Sc;
 import demo.anderson.po.ScExample;
 import demo.anderson.po.ScExample.Criteria;
 import demo.anderson.po.ScKey;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
  *
  * @author anderson
  */
+@Service
 public class ScoreService {
 
+    @Autowired
     private ScMapper scMapper;
 
     public List<Sc> findScoreBySno(String sno) {
