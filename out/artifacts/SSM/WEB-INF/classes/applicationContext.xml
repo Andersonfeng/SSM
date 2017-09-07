@@ -14,7 +14,7 @@
                         http://www.springframework.org/schema/aop
                         http://www.springframework.org/schema/aop/spring-aop.xsd ">
 
-    <context:component-scan base-package="demo.anderson.*"/>
+    <context:component-scan base-package="demo.anderson.controller,demo.anderson.service,demo.anderson.aop"/>
     <mvc:annotation-driven/>
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
@@ -37,13 +37,12 @@
 
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- 指定扫描的包名 
+        <!-- 指定扫描的包名
         如果扫描多个包，每个包中间使用半角逗号分隔
         -->
         <!--<property name="basePackage" value="demo.dao"/>-->
         <property name="basePackage" value="demo.anderson.mapper"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
 
@@ -98,6 +97,8 @@
     <!--<bean id="logHandler" class="demo.anderson.aop.LogHandler"></bean>-->
 
     <aop:aspectj-autoproxy/>
+
+    <!--已经用@Component @Aspect @Pointcut @Before @After <aop:aspectj-autoproxy/>代替-->
     <!--<aop:config>-->
         <!--<aop:aspect id="log" ref="logHandler">-->
             <!--&lt;!&ndash;<aop:pointcut id="addLog" expression="execution(* demo.anderson.controller.StudentController.*(..)) || execution(* demo.anderson.controller.ScoreController.*(..)) and args(..)"  />&ndash;&gt;-->

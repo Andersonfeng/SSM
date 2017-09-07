@@ -5,6 +5,7 @@
  */
 package demo.anderson.aop;
 
+import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LogHandler {
+    Logger logger = Logger.getLogger("");
 
     @Pointcut("execution(* demo.anderson.controller.*.*(..))")
     public void pointCut(){}
@@ -26,13 +28,15 @@ public class LogHandler {
         Object[] args = jp.getArgs();
         for (Object obj : args) {
             if (obj instanceof String) {
-                System.out.println("obj:" + obj);
+                logger.info("obj:" + obj);
+//                System.out.println("obj:" + obj);
             }
         }
-        System.out.println("-----------------------------------beforeLog()-----------------------------------");
+        logger.info("---beforeLog()---");
     }
     @After("pointCut()")
     public void afterLog() {
-        System.out.println("-----------------------------------afterLog()-----------------------------------");
+        logger.info("---afterLog()---");
     }
+
 }
